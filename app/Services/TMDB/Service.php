@@ -47,4 +47,13 @@ class Service
             && $response->status() == ResponseAlias::HTTP_OK
             && $response->json('success') == true;
     }
+
+    public function getGenres(string $type)
+    {
+        $response = $this->request->get(
+            url: $this->generateTheUrl($this->paths->{$type . '_genres'})
+        );
+
+        return $response->json();
+    }
 }
