@@ -2,8 +2,10 @@
 
 namespace App\Services\TMDB;
 
+use App\Services\TMDB\Resources\BaseResource;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -30,6 +32,11 @@ class Service
             ])->timeout($this->timeout);
     }
 
+    private function getTheUrlPathFromList(string $key): ?string
+    {
+        return $this->paths->{$key};
+    }
+
     private function generateTheUrl($path): string|bool
     {
         return isset($path)
@@ -48,12 +55,16 @@ class Service
             && $response->json('success') == true;
     }
 
-    public function getGenres(string $type)
+    public function getData(string $path, string $responseKey, $params = NULL)
     {
         $response = $this->request->get(
-            url: $this->generateTheUrl($this->paths->{$type . '_genres'})
+            url: $this->generateTheUrl($this->getTheUrlPathFromList($path))
         );
 
-        return $response->json();
+        return $params
+            ? $response->collect($responseKey)->transform(function ($item) use ($params){
+                return Arr::only($item, $params);
+            })->all()
+            : $response->collect($responseKey)->toArray();
     }
 }
