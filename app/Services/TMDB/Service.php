@@ -2,9 +2,7 @@
 
 namespace App\Services\TMDB;
 
-use App\Services\TMDB\Resources\BaseResource;
 use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
@@ -27,9 +25,11 @@ class Service
     private function prepareTheRequest(): PendingRequest
     {
         return Http::withToken($this->apiKey)
-            ->withoutVerifying()->withHeaders([
+            ->timeout($this->timeout)
+            ->withoutVerifying()
+            ->withHeaders([
                 'Accept' => 'application/json'
-            ])->timeout($this->timeout);
+            ]);
     }
 
     private function getTheUrlPathFromList(string $key): ?string
