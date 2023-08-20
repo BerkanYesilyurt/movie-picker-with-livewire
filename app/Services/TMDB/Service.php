@@ -55,11 +55,11 @@ class Service
             && $response->json('success') == true;
     }
 
-    public function getData(string $path, string $responseKey, $params = NULL)
+    public function getData(string $path, string $responseKey, $params = NULL, $queryParams = [])
     {
-        $response = $this->request->get(
-            url: $this->generateTheUrl($this->getTheUrlPathFromList($path))
-        );
+        $response = $this->request
+            ->withQueryParameters($queryParams)
+            ->get(url: $this->generateTheUrl($this->getTheUrlPathFromList($path)));
 
         return $params
             ? $response->collect($responseKey)->transform(function ($item) use ($params){
