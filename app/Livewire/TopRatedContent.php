@@ -6,11 +6,12 @@ use Livewire\Component;
 
 class TopRatedContent extends Component
 {
-    public $content;
+    public $content, $genre;
 
-    public function mount($content = NULL)
+    public function mount($content, $genre)
     {
         $this->content = $content;
+        $this->genre = collect($genre);
     }
 
     public function render()
