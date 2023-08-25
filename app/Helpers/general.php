@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
 
 if(!function_exists('checkKeysFromResult')){
     function checkKeysFromResult(Collection $result, array $keys): bool
