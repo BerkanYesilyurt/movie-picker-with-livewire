@@ -1,11 +1,16 @@
 <?php
 
-use Illuminate\Support\Collection;
-
-if(!function_exists('checkKeysFromResult')){
-    function checkKeysFromResult(Collection $result, array $keys): bool
+if(!function_exists('checkKeysFrom')){
+    function checkKeysFrom(?iterable $result, array $keys): bool
     {
-        return $result->has($keys);
+        if(is_null($result))
+            return false;
+
+        $collectionOfResult = is_array($result) ? collect($result) : $result;
+
+        return $collectionOfResult->every(function ($value) use ($keys){
+            return collect($value)->has($keys);
+        });
     }
 }
 
