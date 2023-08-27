@@ -1,12 +1,21 @@
-<livewire:genres :genres="$movie_genres" />
-<livewire:genres :genres="$tv_series_genres" />
+@if(checkKeysFrom($movie_genres, ['id', 'name']))
+    <livewire:genres :genres="$movie_genres" />
+@endif
 
-@foreach($movie_top_rated as $movie)
-    <br><br>
-    <livewire:top-rated-content :content="$movie" :genre="$movie_genres" />
-@endforeach
+@if(checkKeysFrom($tv_series_genres, ['id', 'name']))
+    <livewire:genres :genres="$tv_series_genres" />
+@endif
 
-@foreach($tv_series_top_rated as $tv_series)
-    <br><br>
-    <livewire:top-rated-content :content="$tv_series" :genre="$tv_series_genres" />
-@endforeach
+@if(checkKeysFrom($movie_top_rated, ['id', 'genre_ids', 'poster_path', 'title', 'vote_average']))
+    @foreach($movie_top_rated as $movie)
+        <br><br>
+        <livewire:top-rated-content :content="$movie" :genre="$movie_genres" />
+    @endforeach
+@endif
+
+@if(checkKeysFrom($tv_series_top_rated, ['id', 'genre_ids', 'poster_path', 'name', 'vote_average']))
+    @foreach($tv_series_top_rated as $tv_series)
+        <br><br>
+        <livewire:top-rated-content :content="$tv_series" :genre="$tv_series_genres" />
+    @endforeach
+@endif
