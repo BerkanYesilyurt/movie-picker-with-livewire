@@ -1,3 +1,6 @@
+<livewire:scripts />
+<livewire:content-suggestion />
+<br><br>
 @if(checkKeysFrom($movie_genres, ['id', 'name']))
     <livewire:genres :genres="$movie_genres" />
 @endif
