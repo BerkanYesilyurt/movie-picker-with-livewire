@@ -10,11 +10,12 @@ class ContentSuggestion extends Component
     protected $rules = [
         'type' => 'required|in:tv,movie',
     ];
+
     public function generateContent()
     {
         $this->resetErrorBag();
         $this->resetValidation();
-        $validatedData = $this->validate();
+        $this->validate();
     }
 
     public function render()
