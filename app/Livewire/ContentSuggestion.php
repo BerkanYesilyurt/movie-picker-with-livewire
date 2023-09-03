@@ -2,11 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Services\TMDB\Service;
+use Illuminate\Support\Facades\App;
 use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $type, $adult, $vote_average, $vote_count;
+    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion;
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
@@ -19,6 +21,27 @@ class ContentSuggestion extends Component
         $this->resetErrorBag();
         $this->resetValidation();
         $this->validate();
+        $this->generateSuggestion();
+    }
+
+    private function generateSuggestion()
+    {
+        $tmdbService = App::make(Service::class);
+        $type = match ($this->type){
+            'tv' => 'tv_series_discover',
+            'movie' => 'movie_discover'
+        };
+
+        //TODO: add all fields
+
+        if($tmdbService->checkAuth()){
+            $this->suggestion = $tmdbService->getData(
+                path: $type,
+                responseKey: 'results',
+                params: ['id', 'genre_ids', 'poster_path', 'name', 'vote_average'],
+                queryParams: ['language' => 'en-US', 'page' => 1]
+            );
+        }
     }
 
     public function render()
