@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Services\TMDB\Service;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Livewire\Component;
 
@@ -26,22 +27,33 @@ class ContentSuggestion extends Component
 
     private function generateSuggestion()
     {
-        $tmdbService = App::make(Service::class);
-        $type = match ($this->type){
-            'tv' => 'tv_series_discover',
-            'movie' => 'movie_discover'
+        $details = match ($this->type){
+            'tv' => [
+                'path' => 'tv_series_discover',
+                'params' => ['id', 'genre_ids', 'name', 'overview', 'poster_path', 'vote_average', 'vote_count', 'first_air_date']
+            ],
+            'movie' => [
+                'path' => 'movie_discover',
+                'params' => ['id', 'genre_ids', 'title', 'overview', 'poster_path', 'vote_average', 'vote_count', 'title', 'release_date']
+            ]
         };
 
         //TODO: add all fields
+        $details['responseKey'] = 'total_pages';
+        $pageCount = $this->getSource(Arr::except($details, ['params']));
+        $details['page'] = rand(1, (isset($pageCount[0]) ? ($pageCount[0] > 500 ? 250 : $pageCount[0]) : 1));
+        $details['responseKey'] = 'results';
+        $this->suggestion = collect($this->getSource($details))->random(1);
+    }
 
-        if($tmdbService->checkAuth()){
-            $this->suggestion = $tmdbService->getData(
-                path: $type,
-                responseKey: 'results',
-                params: ['id', 'genre_ids', 'poster_path', 'name', 'vote_average'],
-                queryParams: ['language' => 'en-US', 'page' => 1]
-            );
-        }
+    private function getSource($details)
+    {
+        $tmdbService = App::make(Service::class);
+        return $tmdbService->getData(
+            path: $details['path'],
+            responseKey: $details['responseKey'],
+            params: $details['params'] ?? NULL,
+            queryParams: ['page' => $details['page'] ?? 1]);
     }
 
     public function render()
