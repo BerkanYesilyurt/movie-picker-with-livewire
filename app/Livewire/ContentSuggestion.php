@@ -37,8 +37,7 @@ class ContentSuggestion extends Component
                 'params' => ['id', 'genre_ids', 'title', 'overview', 'poster_path', 'vote_average', 'vote_count', 'title', 'release_date']
             ]
         };
-
-        //TODO: add all fields
+        
         $details['responseKey'] = 'total_pages';
         $pageCount = $this->getSource(Arr::except($details, ['params']));
         $details['page'] = rand(1, (isset($pageCount[0]) ? ($pageCount[0] > 500 ? 250 : $pageCount[0]) : 1));
