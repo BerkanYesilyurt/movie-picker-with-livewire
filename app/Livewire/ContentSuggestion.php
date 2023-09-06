@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion;
+    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $params;
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
@@ -37,12 +37,13 @@ class ContentSuggestion extends Component
                 'params' => ['id', 'genre_ids', 'title', 'overview', 'poster_path', 'vote_average', 'vote_count', 'title', 'release_date']
             ]
         };
-        
+
         $details['responseKey'] = 'total_pages';
         $pageCount = $this->getSource(Arr::except($details, ['params']));
         $details['page'] = rand(1, (isset($pageCount[0]) ? ($pageCount[0] > 500 ? 250 : $pageCount[0]) : 1));
         $details['responseKey'] = 'results';
         $this->suggestion = collect($this->getSource($details))->random(1);
+        $this->params = $details['params'];
     }
 
     private function getSource($details)
