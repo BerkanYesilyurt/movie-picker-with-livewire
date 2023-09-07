@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $params;
+    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $params, $translatedParams;
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
@@ -34,7 +34,7 @@ class ContentSuggestion extends Component
             ],
             'movie' => [
                 'path' => 'movie_discover',
-                'params' => ['id', 'genre_ids', 'title', 'overview', 'poster_path', 'vote_average', 'vote_count', 'title', 'release_date']
+                'params' => ['id', 'genre_ids', 'title', 'overview', 'poster_path', 'vote_average', 'vote_count', 'release_date']
             ]
         };
 
@@ -42,8 +42,9 @@ class ContentSuggestion extends Component
         $pageCount = $this->getSource(Arr::except($details, ['params']));
         $details['page'] = rand(1, (isset($pageCount[0]) ? ($pageCount[0] > 500 ? 250 : $pageCount[0]) : 1));
         $details['responseKey'] = 'results';
-        $this->suggestion = collect($this->getSource($details))->random(1);
+        $this->suggestion = collect($this->getSource($details))->random(1)->toArray();
         $this->params = $details['params'];
+        $this->translatedParams = $this->translatedColumns();
     }
 
     private function getSource($details)
@@ -54,6 +55,22 @@ class ContentSuggestion extends Component
             responseKey: $details['responseKey'],
             params: $details['params'] ?? NULL,
             queryParams: ['page' => $details['page'] ?? 1]);
+    }
+
+    private function translatedColumns(): array
+    {
+        return [
+            'id' => 'ID',
+            'genre_ids' => 'Genres',
+            'name' => 'Name',
+            'title' => 'Title',
+            'overview' => 'Summary',
+            'poster_path' => 'Poster',
+            'vote_average' => 'Vote Average',
+            'vote_count' => 'Total Vote Count',
+            'first_air_date' => 'First Air Date',
+            'release_date' => 'Release Date'
+        ];
     }
 
     public function render()
