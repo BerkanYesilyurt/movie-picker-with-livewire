@@ -5,6 +5,14 @@
         @endforeach
     @endif
 
+    @if(isset($suggestion[0]) && checkKeysFrom($suggestion, $params))
+            <img src="https://image.tmdb.org/t/p/original/{{$suggestion[0]['poster_path']}}" height="100" width="50" /><br>
+            Id: {{$suggestion[0]['id']}}<br>
+            Genres: {{$genre->whereIn('id', $suggestion[0]['genre_ids'])->implode('name', ', ')}}<br>
+            Title: {{$suggestion[0]['title'] ?? $suggestion[0]['name']}}<br>
+            Vote: {{$suggestion[0]['vote_average']}}
+    @endif
+
     <form wire:submit.prevent="generateContent">
         <select wire:model="type" required>
             <option value="">Content Type</option>
