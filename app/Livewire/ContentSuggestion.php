@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $params, $translatedParams;
+    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $params, $translatedParams, $genres;
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
@@ -22,7 +22,17 @@ class ContentSuggestion extends Component
         $this->resetErrorBag();
         $this->resetValidation();
         $this->validate();
+        $this->setGenres();
         $this->generateSuggestion();
+    }
+
+    public function setGenres()
+    {
+        $this->genres = match ($this->type){
+            'tv' => cache()->get('tv_series_genres'),
+            'movie' => cache()->get('movie_genres'),
+            default => null
+        };
     }
 
     private function generateSuggestion()
