@@ -21,11 +21,11 @@ class HomePageController extends Controller
     private function prepareStaticData(): array
     {
         return [
-            'movie_genres' => cache()->get('movie_genres') ?? remember('movie_genres', 600, data: $this->tmdbService->getData(
+            'movie_genres' => cache()->get('movie_genres') ?? remember('movie_genres', 1800, data: $this->tmdbService->getData(
                 path: 'movie_genres',
                 responseKey: 'genres',
                 params: ['id', 'name'])),
-            'tv_series_genres' => cache()->get('tv_series_genres') ?? remember('tv_series_genres', 600, data: $this->tmdbService->getData(
+            'tv_series_genres' => cache()->get('tv_series_genres') ?? remember('tv_series_genres', 1800, data: $this->tmdbService->getData(
                 path: 'tv_series_genres',
                 responseKey: 'genres',
                 params:['id', 'name'])),
