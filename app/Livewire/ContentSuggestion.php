@@ -64,7 +64,7 @@ class ContentSuggestion extends Component
             path: $details['path'],
             responseKey: $details['responseKey'],
             params: $details['params'] ?? NULL,
-            queryParams: ['page' => $details['page'] ?? 1]);
+            queryParams: isset($details['page']) ? ['page' => $details['page']] : []);
     }
 
     private function translatedColumns(): array
