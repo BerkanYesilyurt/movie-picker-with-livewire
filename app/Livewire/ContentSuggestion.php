@@ -17,6 +17,19 @@ class ContentSuggestion extends Component
         'vote_count' => 'required|integer|min:1|max:100000000'
     ];
 
+    private function prepareAndGetFilters($page = NULL)
+    {
+        $filters = [
+            'include_adult' => $this->adult,
+            'vote_average.gte' => $this->vote_average,
+            'vote_count.gte' => $this->vote_count
+        ];
+
+        return $page
+            ? array_merge($filters, ['page' => $page])
+            : $filters;
+    }
+
     public function generateContent()
     {
         $this->resetErrorBag();
@@ -59,12 +72,18 @@ class ContentSuggestion extends Component
 
     private function getSource($details)
     {
-        $tmdbService = App::make(Service::class);
+        $tmdbService = new Service(
+            config('api.tmdb.base_url'),
+            config('api.tmdb.paths'),
+            config('api.tmdb.api_key'),
+            config('api.tmdb.timeout')
+        );
+
         return $tmdbService->getData(
             path: $details['path'],
             responseKey: $details['responseKey'],
             params: $details['params'] ?? NULL,
-            queryParams: isset($details['page']) ? ['page' => $details['page']] : []);
+            queryParams: $this->prepareAndGetFilters($details['page'] ?? NULL));
     }
 
     private function translatedColumns(): array
