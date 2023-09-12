@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use App\Services\TMDB\Service;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
 use Livewire\Component;
 
 class ContentSuggestion extends Component
