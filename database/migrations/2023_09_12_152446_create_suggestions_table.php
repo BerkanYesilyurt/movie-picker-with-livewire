@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('suggestions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('user_id')->index();
+            $table->tinyInteger('type')->index();
+            $table->json('content');
             $table->timestamps();
         });
     }
