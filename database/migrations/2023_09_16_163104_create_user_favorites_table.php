@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('user_favorites', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('suggestion_id')->index();
             $table->timestamps();
         });
     }
