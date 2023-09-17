@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Suggestion::class);
     }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(UserFavorite::class);
+    }
 }
