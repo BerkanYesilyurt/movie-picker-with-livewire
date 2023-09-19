@@ -11,6 +11,8 @@
             @if($genres) Genres: {{collect($genres)->whereIn('id', $suggestion[0]['genre_ids'])->implode('name', ', ')}}<br> @endif
             Title: {{$suggestion[0]['title'] ?? $suggestion[0]['name']}}<br>
             Vote: {{$suggestion[0]['vote_average']}}
+
+            <livewire:user-favorite :content="$suggestion[0]" />
     @endif
 
     <form wire:submit.prevent="generateContent">
