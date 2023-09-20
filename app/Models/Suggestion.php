@@ -9,8 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Suggestion extends Model
 {
     protected $table = 'suggestions';
+    protected $fillable = [
+        'user_id',
+        'type',
+        'content'
+    ];
     protected $casts = [
-        'type' => ContentTypeEnum::class
+        'type' => ContentTypeEnum::class,
+        'content' => 'json'
     ];
 
     public function user(): BelongsTo
