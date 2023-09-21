@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Enums\ContentTypeEnum;
+use App\Models\Suggestion;
 use App\Services\TMDB\Service;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ContentSuggestion extends Component
@@ -36,6 +39,7 @@ class ContentSuggestion extends Component
         $this->validate();
         $this->setGenres();
         $this->generateSuggestion();
+        $this->createSuggestionRecord();
     }
 
     public function setGenres()
@@ -67,6 +71,18 @@ class ContentSuggestion extends Component
         $this->suggestion = collect($this->getSource($details))->random(1)->toArray();
         $this->params = $details['params'];
         $this->translatedParams = $this->translatedColumns();
+    }
+
+    private function createSuggestionRecord()
+    {
+        if(auth()->check() && $this->suggestion[0])
+        {
+            Suggestion::create([
+                'user_id' => auth()->user()->id,
+                'type' => ContentTypeEnum::getValueOf($this->type),
+                'content' => $this->suggestion[0]
+            ]);
+        }
     }
 
     private function getSource($details)
