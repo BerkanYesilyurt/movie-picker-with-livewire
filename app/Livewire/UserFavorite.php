@@ -2,15 +2,18 @@
 
 namespace App\Livewire;
 
+use App\Models\Suggestion;
 use Livewire\Component;
 
 class UserFavorite extends Component
 {
-    public $content;
+    public $suggestion, $content;
 
-    protected array $rules = [
-        'content' => 'required'
-    ];
+    public function mount($suggestion, $content)
+    {
+        $this->content = $content;
+        $this->suggestion = Suggestion::find($suggestion);
+    }
 
     public function render()
     {
