@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $params, $translatedParams, $genres;
+    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres;
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
@@ -77,11 +77,11 @@ class ContentSuggestion extends Component
     {
         if(auth()->check() && $this->suggestion[0])
         {
-            Suggestion::create([
+            $this->suggestionId = Suggestion::create([
                 'user_id' => auth()->user()->id,
                 'type' => ContentTypeEnum::getValueOf($this->type),
                 'content' => $this->suggestion[0]
-            ]);
+            ])->id;
         }
     }
 
