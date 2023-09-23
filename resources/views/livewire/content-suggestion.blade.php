@@ -6,7 +6,7 @@
     @endif
 
     @if(isset($suggestion[0]) && checkKeysFrom($suggestion, $params))
-            <img src="https://image.tmdb.org/t/p/original/{{$suggestion[0]['poster_path']}}" height="100" width="50" /><br>
+            <img src="{{config('api.tmdb.poster_url') . $suggestion[0]['poster_path']}}" height="100" width="50" /><br>
             Id: {{$suggestion[0]['id']}}<br>
             @if($genres) Genres: {{collect($genres)->whereIn('id', $suggestion[0]['genre_ids'])->implode('name', ', ')}}<br> @endif
             Title: {{$suggestion[0]['title'] ?? $suggestion[0]['name']}}<br>
