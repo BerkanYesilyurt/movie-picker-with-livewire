@@ -3,6 +3,7 @@
 return [
     'tmdb' => [
         'base_url' => 'https://api.themoviedb.org/3/',
+        'poster_url' => 'https://image.tmdb.org/t/p/original/',
         'api_key' => env('the_movie_db_api_key'),
         'timeout' => 5,
         'paths' => [
