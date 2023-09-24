@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserFavorite extends Model
 {
     protected $table = 'user_favorites';
+    protected $fillable = [
+        'user_id',
+        'suggestion_id'
+    ];
 
     public function user(): BelongsTo
     {
