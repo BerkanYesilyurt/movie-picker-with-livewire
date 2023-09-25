@@ -7,12 +7,12 @@ use Livewire\Component;
 
 class UserFavorite extends Component
 {
-    public $suggestion, $content;
+    public $suggestion, $isFavorited;
 
-    public function mount($suggestion, $content)
+    public function mount($suggestion, $isFavorited = false)
     {
-        $this->content = $content;
-        $this->suggestion = Suggestion::find($suggestion);
+        $this->suggestion = Suggestion::with('favorite')->whereId($suggestion)->first();
+        $this->isFavorited = $this->suggestion?->favorite;
     }
 
     public function render()
