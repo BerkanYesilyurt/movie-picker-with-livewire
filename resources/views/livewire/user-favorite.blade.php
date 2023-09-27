@@ -1,8 +1,8 @@
 <div>
     @if($isFavorited && auth()->check())
-        //FAVORITED
+        <button wire:click="discard">Discard from Favorites</button>
     @elseif($suggestion && auth()->check())
-        //SUGGESTION EXISTS BUT NOT FAVORITED
+        <button wire:click="add">Add to Favorites</button>
     @else
         //NOT LOGGED IN
     @endif
