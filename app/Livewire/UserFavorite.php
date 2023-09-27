@@ -15,6 +15,25 @@ class UserFavorite extends Component
         $this->isFavorited = $this->suggestion?->favorite;
     }
 
+    public function add()
+    {
+        if($this->checkAuth() && !$this->isFavorited)
+            $this->isFavorited = $this->suggestion->favorite()->create(['user_id' => auth()->user()->id]);
+    }
+
+    public function discard()
+    {
+        if($this->checkAuth() && $this->isFavorited){
+            $this->suggestion->favorite()->delete();
+            $this->isFavorited = null;
+        }
+    }
+
+    private function checkAuth(): bool
+    {
+        return auth()->check();
+    }
+
     public function render()
     {
         return view('livewire.user-favorite');
