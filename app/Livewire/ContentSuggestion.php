@@ -6,7 +6,6 @@ use App\Enums\ContentTypeEnum;
 use App\Models\Suggestion;
 use App\Services\TMDB\Service;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ContentSuggestion extends Component
