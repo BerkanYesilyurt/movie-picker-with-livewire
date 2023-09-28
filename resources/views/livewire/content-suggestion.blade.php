@@ -16,11 +16,16 @@
     @endif
 
     <form wire:submit.prevent="generateContent">
-        <select wire:model="type" required>
+        <select wire:model="type" wire:change="setGenres" required>
             <option value="">Content Type</option>
             <option value="movie">Movie</option>
             <option value="tv">TV Series</option>
         </select>
+
+        @if(isset($genres) && checkKeysFrom($genres, ['id', 'name']))
+            <livewire:genres :genres="$genres" />
+        @endif
+
         <select wire:model="adult" required>
             <option value="">Include Adult</option>
             <option value="1">Yes</option>
