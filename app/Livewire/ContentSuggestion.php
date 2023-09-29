@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $tmdbService, $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres;
+    public $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres;
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
