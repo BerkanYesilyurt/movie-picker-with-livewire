@@ -10,12 +10,15 @@ use Livewire\Component;
 
 class ContentSuggestion extends Component
 {
-    public $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres;
+    public $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres, $genre;
+    public $refreshComponent = false;
+
     protected array $rules = [
         'type' => 'required|in:tv,movie',
         'adult' => 'required|boolean',
         'vote_average' => 'required|in:5,6,7,8,9',
-        'vote_count' => 'required|integer|min:1|max:100000000'
+        'vote_count' => 'required|integer|min:1|max:100000000',
+        'genre' => 'nullable|numeric'
     ];
 
     private function prepareAndGetFilters($page = NULL)
@@ -23,7 +26,8 @@ class ContentSuggestion extends Component
         $filters = [
             'include_adult' => $this->adult,
             'vote_average.gte' => $this->vote_average,
-            'vote_count.gte' => $this->vote_count
+            'vote_count.gte' => $this->vote_count,
+            'with_genres' => $this->genre
         ];
 
         return $page
@@ -36,13 +40,13 @@ class ContentSuggestion extends Component
         $this->resetErrorBag();
         $this->resetValidation();
         $this->validate();
-        $this->setGenres();
         $this->generateSuggestion();
         $this->createSuggestionRecord();
     }
 
     public function setGenres()
     {
+        $this->refreshComponent = !$this->refreshComponent;
         $this->genres = match ($this->type){
             'tv' => cache()->get('tv_series_genres'),
             'movie' => cache()->get('movie_genres'),
