@@ -23,7 +23,7 @@
         </select>
 
         @if(isset($genres) && checkKeysFrom($genres, ['id', 'name']))
-            <livewire:genres :genres="$genres" />
+            <livewire:genres :genres="$genres" :key="$refreshComponent" />
         @endif
 
         <select wire:model="adult" required>
