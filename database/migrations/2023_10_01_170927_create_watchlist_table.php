@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('watchlist', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->json('list');
             $table->timestamps();
         });
     }
