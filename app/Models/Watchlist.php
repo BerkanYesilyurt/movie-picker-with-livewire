@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Watchlist extends Model
 {
@@ -11,4 +12,12 @@ class Watchlist extends Model
         'user_id',
         'list'
     ];
+    protected $casts = [
+        'list' => 'json'
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
