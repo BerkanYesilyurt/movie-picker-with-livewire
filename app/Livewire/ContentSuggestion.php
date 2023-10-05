@@ -12,6 +12,7 @@ class ContentSuggestion extends Component
 {
     public $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres, $genre;
     public $refreshComponent = false;
+    public $refreshButtons = false;
 
     protected array $rules = [
         'type' => 'required|in:tv,movie',
@@ -39,6 +40,7 @@ class ContentSuggestion extends Component
     {
         $this->resetErrorBag();
         $this->resetValidation();
+        $this->refreshButtons = !$this->refreshButtons;
         $this->validate();
         $this->generateSuggestion();
         $this->createSuggestionRecord();
