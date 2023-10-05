@@ -12,7 +12,8 @@
             Title: {{$suggestion[0]['title'] ?? $suggestion[0]['name']}}<br>
             Vote: {{$suggestion[0]['vote_average']}}
 
-            <livewire:user-favorite :suggestion="$suggestionId" />
+            <livewire:user-favorite :suggestion="$suggestionId" :key="'favorite' . $refreshButtons" />
+            <livewire:watchlist :suggestion="$suggestionId" :key="'watchlist' . $refreshButtons" />
     @endif
 
     <form wire:submit.prevent="generateContent">
