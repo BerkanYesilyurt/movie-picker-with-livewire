@@ -29,6 +29,18 @@ class Watchlist extends Component
             $this->watchlist = WatchlistModel::where('user_id', auth()->user()->id)->first();
         }
     }
+
+    public function discard()
+    {
+        if($this->checkAuth() && $this->checkExistsInList($this->suggestion->id) && $this->watchlist){
+            $list = $this->watchlist->list;
+            auth()->user()->watchlist()->update([
+                'list' => collect($list)->reject(fn($item) => $item == $this->suggestion->id)->toArray()
+            ]);
+            $this->watchlist = WatchlistModel::where('user_id', auth()->user()->id)->first();
+        }
+    }
+
     private function checkExistsInList($id): bool
     {
         return isset($this->watchlist) && in_array($id, $this->watchlist->list);
