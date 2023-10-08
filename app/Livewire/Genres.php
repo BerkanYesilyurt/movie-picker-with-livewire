@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class Genres extends Component
 {
-    public $genres;
+    public $genres, $genre;
 
     public function mount($genres = NULL)
     {
