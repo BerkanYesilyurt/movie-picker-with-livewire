@@ -13,6 +13,7 @@ class ContentSuggestion extends Component
     public $type, $adult, $vote_average, $vote_count, $suggestion, $suggestionId, $params, $translatedParams, $genres, $genre;
     public $refreshComponent = false;
     public $refreshButtons = false;
+    protected $listeners = ['setSelectedGenre'];
 
     protected array $rules = [
         'type' => 'required|in:tv,movie',
@@ -44,6 +45,11 @@ class ContentSuggestion extends Component
         $this->validate();
         $this->generateSuggestion();
         $this->createSuggestionRecord();
+    }
+
+    public function setSelectedGenre($genreId)
+    {
+        $this->genre = $genreId;
     }
 
     public function setGenres()
