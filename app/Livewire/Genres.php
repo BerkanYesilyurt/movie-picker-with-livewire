@@ -13,6 +13,10 @@ class Genres extends Component
         $this->genres = $genres;
     }
 
+    public function setSelectedGenre(){
+        $this->dispatch('setSelectedGenre', $this->genre);
+    }
+
     public function render()
     {
         return view('livewire.genres');
