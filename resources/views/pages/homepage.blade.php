@@ -1,13 +1,6 @@
 <livewire:scripts />
 <livewire:content-suggestion />
 <br><br>
-@if(checkKeysFrom($movie_genres, ['id', 'name']))
-    <livewire:genres :genres="$movie_genres" />
-@endif
-
-@if(checkKeysFrom($tv_series_genres, ['id', 'name']))
-    <livewire:genres :genres="$tv_series_genres" />
-@endif
 
 @if(checkKeysFrom($movie_top_rated, ['id', 'genre_ids', 'poster_path', 'title', 'vote_average']))
     @foreach($movie_top_rated as $movie)
