@@ -18,6 +18,13 @@ class HomePageController extends Controller
         }
     }
 
+    public function dashboard()
+    {
+        if($this->tmdbService->checkAuth()){
+            return view('dashboard', $this->prepareStaticData());
+        }
+    }
+
     private function prepareStaticData(): array
     {
         return [
